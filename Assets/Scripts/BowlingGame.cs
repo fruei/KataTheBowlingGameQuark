@@ -30,13 +30,18 @@ public class BowlingGame : MonoBehaviour
     public void PlayerMakesASpare()
     {
         spare = currentShoot == 2 ? true : false;
-        extraShoots = spare && turns == 0 ? 1 : 0;
+        extraShoots = CanGetExtraShoots(spare) ? 1 : 0;
+    }
+
+    bool CanGetExtraShoots(bool canGet)
+    {
+        return canGet && turns == 0 && extraShoots == 0;
     }
 
     public void PlayerMakesAStrike()
     {
         strike = currentShoot == 1 ? true : false;
-        extraShoots = strike && turns == 0 && extraShoots == 0 ? 2 : 1;
+        extraShoots = CanGetExtraShoots(strike) ? 2 : 1;
     }
 
     public void EndTurn() {

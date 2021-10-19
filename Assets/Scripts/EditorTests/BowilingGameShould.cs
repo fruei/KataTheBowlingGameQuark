@@ -126,7 +126,7 @@ namespace Tests
             /// Arrange
             _bowlingGame.turns = 0;
             _bowlingGame.currentShoot = 1;
-            _bowlingGame.extraShoots=2;
+            _bowlingGame.extraShoots = 2;
 
             /// Act
             _bowlingGame.PlayerMakesAStrike();
@@ -135,6 +135,23 @@ namespace Tests
             /// Assert
             Assert.IsTrue(_bowlingGame.turns == 0, $"Expected turn 0, but was {_bowlingGame.turns}");
             Assert.AreEqual(1, result);
+        }
+
+        [Test]
+        public void PlayerMakesSpareInTheBonusTurn_DontGetExtraShootsForTheTurn()
+        {
+            /// Arrange
+            _bowlingGame.turns = 0;
+            _bowlingGame.currentShoot = 2;
+            _bowlingGame.extraShoots = 1;
+
+            /// Act
+            _bowlingGame.PlayerMakesASpare();
+            var result = _bowlingGame.extraShoots;
+
+            /// Assert
+            Assert.IsTrue(_bowlingGame.turns == 0, $"Expected turn 0, but was {_bowlingGame.turns}");
+            Assert.AreEqual(0, result);
         }
     }
 }
