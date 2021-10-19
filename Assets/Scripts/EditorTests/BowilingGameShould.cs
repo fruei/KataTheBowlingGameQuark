@@ -43,16 +43,98 @@ namespace Tests
         }
 
         [Test]
-        public void PlayerDontShoot10BowlingPines_TotalTurnPointsAreTotalBowlinPinesShooted()
+        public void PlayerDontShoot10BowlingPines_TotalTurnPointsAreTotalShootedBowlingPines()
         {
             /// Arrange
-            _bowlingGame
+            _bowlingGame.currentPinesCount = 8;
+
             /// Act
             var result = _bowlingGame.GetTotalShootedBowlingPines();
 
             /// Assert
-            Assert.AreEqual();
+            Assert.AreEqual(2, result);
         }
 
+        [Test]
+        public void PlayerMakesASpare_TotalTurnPointsAre10PlusTotalShootedBowlingPinesInTheNextTurn()
+        {
+            /// Arrange
+            _bowlingGame.currentShoot = 2;
+            _bowlingGame.PlayerMakesASpare();
+            _bowlingGame.currentPinesCount = 6;
+
+            /// Act
+            var result = _bowlingGame.GetTotalShootedBowlingPines();
+
+            /// Assert
+            Assert.AreEqual(14, result);
+        }
+
+        [Test]
+        public void PlayerMakesAStrike_TurnsEndThen_TotalTurnPointsAre10PlusTotalShootedBowlingPinesInTheNext2Turns()
+        {
+            /// Arrange
+            _bowlingGame.currentShoot = 1;
+            _bowlingGame.PlayerMakesAStrike();
+            _bowlingGame.EndTurn();
+
+            /// Act
+            _bowlingGame.currentPinesCount = 3;
+            var resultTurn1 = _bowlingGame.GetTotalShootedBowlingPines();
+            _bowlingGame.currentPinesCount = 8;
+            var resultTurn2 = _bowlingGame.GetTotalShootedBowlingPines();
+
+            /// Assert
+            Assert.AreEqual(19, resultTurn1 + resultTurn2);
+        }
+
+        [Test]
+        public void PlayerMakesStrikeInLastTurn_ThenGet2ExtraShootsForTheTurn()
+        {
+            /// Arrange
+            _bowlingGame.turns = 0;
+            _bowlingGame.currentShoot = 1;
+            _bowlingGame.PlayerMakesAStrike();
+
+            /// Act
+            var result = _bowlingGame.extraShoots;
+
+            /// Assert
+            Assert.IsTrue(_bowlingGame.turns == 0, $"Expected turn 0, but was {_bowlingGame.turns}");
+            Assert.AreEqual(2, result);
+        }
+
+        [Test]
+        public void PlayerMakesSpareInLastTurn_ThenGet1ExtraShootsForTheTurn()
+        {
+            /// Arrange
+            _bowlingGame.turns = 0;
+            _bowlingGame.currentShoot = 2;
+            _bowlingGame.PlayerMakesASpare();
+
+            /// Act
+            var result = _bowlingGame.extraShoots;
+
+            /// Assert
+            Assert.IsTrue(_bowlingGame.turns == 0, $"Expected turn 0, but was {_bowlingGame.turns}");
+            Assert.AreEqual(1, result);
+        }
+
+        [Test]
+        public void PlayerMakesStrikeInTheBonusTurn_DontGet2ExtraShootsForTheTurn()
+        {
+            /// Arrange
+            _bowlingGame.turns = 0;
+            _bowlingGame.currentShoot = 1;
+            _bowlingGame.extraShoots=2;
+
+            /// Act
+            _bowlingGame.PlayerMakesAStrike();
+            var result = _bowlingGame.extraShoots;
+
+            /// Assert
+            Assert.IsTrue(_bowlingGame.turns == 0, $"Expected turn 0, but was {_bowlingGame.turns}");
+            Assert.AreEqual(1, result);
+        }
     }
 }
