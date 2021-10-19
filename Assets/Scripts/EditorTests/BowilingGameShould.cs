@@ -8,21 +8,51 @@ namespace Tests
 {
     public class BowilingGameShould
     {
-        // A Test behaves as an ordinary method
-        [Test]
-        public void BowilingGameShouldSimplePasses()
+        GameObject go;
+        BowlingGame _bowlingGame;
+
+        [SetUp]
+        public void Setup()
         {
-            // Use the Assert class to test conditions
+            go = new GameObject();
+            _bowlingGame = go.AddComponent<BowlingGame>();
         }
 
-        // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-        // `yield return null;` to skip a frame.
-        [UnityTest]
-        public IEnumerator BowilingGameShouldWithEnumeratorPasses()
+        [Test]
+        public void Have10Turns()
         {
-            // Use the Assert class to test conditions.
-            // Use yield to skip a frame.
-            yield return null;
+            /// Assert
+            Assert.AreEqual(10, _bowlingGame.turns);
         }
+
+        [Test]
+        public void Have10BowlingsEachTurn()
+        {
+            /// Assert
+            Assert.AreEqual(10, _bowlingGame.currentPinesCount);
+        }
+
+        [Test]
+        public void PlayerMake2ShootsEachTurn()
+        {
+            /// Act
+            var result = _bowlingGame.PlayerMakeShoot();
+
+            /// Assert
+            Assert.AreEqual(2, result);
+        }
+
+        [Test]
+        public void PlayerDontShoot10BowlingPines_TotalTurnPointsAreTotalBowlinPinesShooted()
+        {
+            /// Arrange
+            _bowlingGame
+            /// Act
+            var result = _bowlingGame.GetTotalShootedBowlingPines();
+
+            /// Assert
+            Assert.AreEqual();
+        }
+
     }
 }
