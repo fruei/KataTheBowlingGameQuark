@@ -1,9 +1,11 @@
 {
     "name": "EditorTests",
+    "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "AssemblyScriptReference"
+        "AssemblyScriptReference",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"

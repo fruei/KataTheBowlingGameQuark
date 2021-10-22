@@ -1328,6 +1328,7 @@ MonoBehaviour:
   pinesPerTurn: 10
   availablesRolls: 2
   currentPoints: 0
+  currentPointsUIText: {fileID: 213268526}
 --- !u!4 &1040417064
 Transform:
   m_ObjectHideFlags: 0

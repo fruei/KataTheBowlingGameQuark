@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using TMPro;
 
 namespace Tests
 {
@@ -15,7 +16,9 @@ namespace Tests
         public void SetUp()
         {
             go = new GameObject();
+            TextMeshProUGUI currentPointsUGUI = go.AddComponent<TextMeshProUGUI>();
             bo = go.AddComponent<BowlingGamev2>();
+            bo.currentPointsUIText = currentPointsUGUI;
         }
         [Test]
         public void Have10Turns()
@@ -63,6 +66,7 @@ namespace Tests
             // Then
             Assert.AreEqual(9, bo.currentPoints);
         }
+
         [Test]
         public void PlayerMakeRoll_UIPuntajeActualResponseCurrentPoints()
         {
@@ -70,7 +74,33 @@ namespace Tests
             bo.Roll(6);
 
             // Then
-            //Assert.AreEqual("9", bo.currentPointsUIText);
+            Assert.AreEqual("6", bo.currentPointsUIText.text);
+        }
+        [Test]
+        public void PlayerMakeRoll_TeardownAvailableRolls()
+        {
+            // Given
+            bo.availablesRolls = 2;
+
+            // When
+            bo.Roll(6);
+
+            // Then
+            Assert.AreEqual(1, bo.availablesRolls);
+        }
+        [Test]
+        public void PlayerMake2Roll_CurrentTurnPlusOne()
+        {
+            // Given
+            bo.currentTurn = 4;
+            bo.availablesRolls = 2;
+
+            // When
+            bo.Roll(6);
+            bo.Roll(6);
+
+            // Then
+            Assert.AreEqual(5, bo.currentTurn);
         }
     }        
 }
